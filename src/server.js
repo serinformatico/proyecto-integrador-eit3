@@ -1,65 +1,62 @@
-const express = require('express');
-const { findOneById, findAll, create, update, destroy } = require('./database/data.manager.js');
-const path = require('path');
+const express = require("express");
+const cors = require("cors");
+const multer = require("multer");
+const productsRouter = require("./routes/products.router.js");
+const consultsRouter = require("./routes/consults.router.js");
+const database = require("./connectionDB.js");
 
+const { ERROR_SERVER } = require("./constants/messages.js");
+const { ENV_PATH, DIR_PUBLIC_PATH, DIR_VIEWS_PATH } = require("./constants/paths.js");
+
+// Configuración de la ruta de las variables de entorno
+require("dotenv").config({ path: ENV_PATH });
+
+// Configuración de express
 const server = express();
-require('dotenv').config({ path: path.join(__dirname, '.env') });
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || "localhost";
 
-// Middlewares
+// Configuración de CORS
+server.use(cors({
+    origin: process.env.FRONTEND_HOST,
+    methods: "GET,PUT,PATCH,POST,DELETE",
+}));
+
+// Configuración del motor de plantillas HTML
+server.set("views", DIR_VIEWS_PATH);
+server.set("view engine", "ejs");
+
+// Configuración de ruta estática
+server.use("/public", express.static(DIR_PUBLIC_PATH));
+
+// Middlewares & Routes
 server.use(express.json());
-server.use(express.urlencoded({ extended: true }));
-server.use('/public', express.static(path.join(__dirname, 'public')));
+server.use("/api/products", productsRouter);
+server.use("/api/consults", consultsRouter);
 
-// Obtener todos los productos: GET http://127.0.0.1:3030/productos
-server.get('/productos', (req, res) => {
-    findAll()
-        .then((productos) => res.status(200).send(productos))
-        .catch((error) => res.status(400).send(error.message));
-});
+// Control de errores
+server.use((error, req, res, next) => {
+    if (error instanceof multer.MulterError) {
+        return res.status(error.code).send({ success: false, message: error.field });
+    }
 
-// Obtener un producto específico: GET http://127.0.0.1:3030/productos/1
-server.get('/productos/:id', (req, res) => {
-    const { id } = req.params;
-
-    findOneById(Number(id))
-        .then((producto) => res.status(200).send(producto))
-        .catch((error) => res.status(400).send(error.message));
-});
-
-// Crear un nuevo producto: POST http://127.0.0.1:3030/productos
-server.post('/productos', (req, res) => {
-    const { name, description, image, sizes, isPromotion } = req.body;
-
-    create({ name, description, image, sizes, isPromotion })
-        .then((productos) => res.status(201).send(productos))
-        .catch((error) => res.status(400).send(error.message));
-});
-
-// Actualizar un producto específico: PUT http://127.0.0.1:3030/productos/1
-server.put('/productos/:id', (req, res) => {
-    const { id } = req.params;
-    const { name, description, image, sizes, isPromotion } = req.body;
-
-    update({ id: Number(id), name, description, image, sizes, isPromotion })
-        .then((producto) => res.status(200).send(producto))
-        .catch((error) => res.status(400).send(error.message));
-});
-
-// Eliminar un producto específico: DELETE http://127.0.0.1:3030/productos/1
-server.delete('/productos/:id', (req, res) => {
-    const { id } = req.params;
-
-    destroy(Number(id))
-        .then((producto) => res.status(200).send(producto))
-        .catch((error) => res.status(400).send(error.message));
+    res.status(500).send({ success: false, message: ERROR_SERVER });
 });
 
 // Control de rutas inexistentes
-server.use('*', (req, res) => {
-    res.status(404).send(`<h1>Error 404</h1><h3>La URL indicada no existe en este servidor</h3>`);
+server.use("*", (req, res) => {
+    res.status(404).send("<h1>Error 404</h1><h3>La URL indicada no existe en este servidor</h3>");
 });
 
 // Método oyente de solicitudes
-server.listen(process.env.SERVER_PORT, process.env.SERVER_HOST, () => {
-    console.log(`Ejecutandose en http://${process.env.SERVER_HOST}:${process.env.SERVER_PORT}/productos`);
+server.listen(PORT, HOST, () => {
+    console.log(`Server NodeJS version: ${process.version}`);
+    console.log(`Ejecutandose en http://${HOST}:${PORT}`);
+    database.connect(process.env.DATABASE_URL, process.env.DATABASE_NAME);
+});
+
+// Método que controla el cierre del servidor
+process.on("SIGINT", async () => {
+    await database.desconnect();
+    process.exit();
 });
