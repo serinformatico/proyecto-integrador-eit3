@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
 const productsRouter = require("./routes/products.router.js");
+const shoppingCartsRouter = require("./routes/shoppingCarts.router.js");
 const consultsRouter = require("./routes/consults.router.js");
 const database = require("./connectionDB.js");
 
@@ -32,6 +33,7 @@ server.use("/public", express.static(DIR_PUBLIC_PATH));
 // Middlewares & Routes
 server.use(express.json());
 server.use("/api/products", productsRouter);
+server.use("/api/shopping-carts", shoppingCartsRouter);
 server.use("/api/consults", consultsRouter);
 
 // Control de errores

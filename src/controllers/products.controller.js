@@ -12,20 +12,9 @@ const { getSession, getCollection, generateId } = require("../connectionDB.js");
 const { deleteFile } = require("../fileSystem.js");
 
 const { HEADER_CONTENT_TYPE } = require("../constants/headers.js");
-
 const { ERROR_ID_NOT_FOUND, ERROR_IDS_NOT_FOUND, ERROR_UPLOAD_NULL, ERROR_SERVER } = require("../constants/messages.js");
 const { DIR_IMAGES_PATH } = require("../constants/paths.js");
-
-const normalizeText = (value) => {
-    return value
-        .toUpperCase()
-        .trim()
-        .replace("Á", "A")
-        .replace("É", "E")
-        .replace("Í", "I")
-        .replace("Ó", "O")
-        .replace("Ú", "U");
-};
+const { normalizeText } = require("../helpers/string.helper.js");
 
 const createSchema = (values) => {
     const { id, name, description, imageFileName, stock, price, isPromotion } = values;
