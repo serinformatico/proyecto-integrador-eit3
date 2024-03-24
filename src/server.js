@@ -1,9 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
+
 const productsRouter = require("./routes/products.router.js");
 const shoppingCartsRouter = require("./routes/shoppingCarts.router.js");
 const consultsRouter = require("./routes/consults.router.js");
+const paymentsRouter = require("./routes/payments.router.js");
+
 const database = require("./connectionDB.js");
 
 const { ERROR_SERVER } = require("./constants/messages.js");
@@ -14,8 +17,8 @@ require("dotenv").config({ path: ENV_PATH });
 
 // Configuración de express
 const server = express();
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || "localhost";
+const PORT = process.env.PORT;
+const HOST = process.env.HOST;
 
 // Configuración de CORS
 server.use(cors({
@@ -35,6 +38,7 @@ server.use(express.json());
 server.use("/api/products", productsRouter);
 server.use("/api/shopping-carts", shoppingCartsRouter);
 server.use("/api/consults", consultsRouter);
+server.use("/api/payments", paymentsRouter);
 
 // Control de errores
 server.use((error, req, res, next) => {
