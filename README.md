@@ -1,48 +1,58 @@
-# Proyecto Integrador III
-*Bootcamp de Programación Full Stack - EducacionIT*
+# Proyecto Integrador III de Programación Full Stack (Backend) - Educación IT
+
+
+### Contenido
+- [Proyecto Integrador III de Programación Full Stack (Backend) - Educación IT](#proyecto-integrador-iii-de-programación-full-stack-backend---educación-it)
+    - [Contenido](#contenido)
+    - [Descripción](#descripción)
+    - [Requerimientos:](#requerimientos)
+    - [Instalación](#instalación)
+    - [URL del proyecto en Render.com](#url-del-proyecto-en-rendercom)
+    - [¿Te ha gustado este proyecto?](#te-ha-gustado-este-proyecto)
+
+
+### Descripción
+El presente proyecto corresponde al curso de **Programación Full Stack**, dictado por el profesor **Lic. Sergio Regalado Alessi** en la institución **Educación IT**.
+
+Su objetivo es aplicar y consolidar los conocimientos adquiridos en desarrollo Backend mediante el uso de herramientas y tecnologías de vanguardia. El resultado es una aplicación robusta, eficiente, mantenible y de alto rendimiento, que demuestra el dominio de los conceptos aprendidos durante el curso.
+
 
 ### Requerimientos:
-- Node.js v18.17.1
+Para ejecutar el proyecto correctamente, asegúrate de cumplir con los siguientes requisitos de software:
+- Node.js v18.20.4
+- Mongo Shell v2.2.15
 - GIT v2.34.1
-- IDE - Visual Studio Code v1.86.2
-- Microsoft Windows o Linux
-- LocalTunnel / Ngrok
+- IDE - Visual Studio Code v1.92.0
 
-### Configuración de Deploy:
-- Configurar el archivo package.json:
-    ```json
-    "scripts": {
-        "prod": "node --trace-warnings ./src/server.js",
-        "dev": "node --watch --no-warnings ./src/server.js",
-        "stop-linux": "killall -9 node",
-        "stop-windows": "taskkill /F /IM node.exe",
-        "lint": "eslint ./src"
-    },
+
+### Instalación
+Para instalar y ejecutar el proyecto, sigue estos pasos:
+1. Abre una terminal en la raíz de tu partición principal o en tu directorio preferido.
+2. Clona el repositorio del proyecto:
+    ``` sh
+    git clone https://github.com/serinformatico/proyecto-integrador-eit3.git
+    ```
+3. Navega al directorio del proyecto:
+    ``` sh
+    cd proyecto-integrador-eit3
+    ```
+4. Instala las dependencias del proyecto:
+    ``` sh
+    npm install
+    ```
+5. Inicia el servidor en modo desarrollo:
+    ``` sh
+    npm run dev
+    ```
+6. Abre el proyecto en Visual Studio Code:
+    ``` sh
+    code .
     ```
 
-### Instrucciones para crear un Tunel HTTP:
-1. Instalar LocalTunnel:
-   - sudo npm install localtunnel --save-dev
-2. Levantar LocalTunnel:
-   1. Levantar el servidor de NodeJS en el puerto 3000
-   2. Generar URL HTTPS:
-      - npx lt --port 3000
-   3. Ir a la URL generada por LocalTunnel
-   4. Ingresar el Tunnel Password. Se obtiene desde [aquí](https://loca.lt/mytunnelpassword).
-   5. Ingresar en el navegador la URI. Por ejemplo: https://plain-coats-make.loca.lt/api/products
-
-### Host Render.com
-1. Registrarse en [Render.com](https://render.com)
-2. Seleccionar la opción de Web Service
-3. Conectar con el repositorio de GitHub
-4. Agregar en Render.com las variables de entorno (datos de .env.prod)
-
-### Instrucciones para hacer un Deploy:
-Ejecutar los siguientes comandos:
-   - git add .
-   - git commit -m "Deploy N°003: New version of project"
-   - git push
+### URL del proyecto en Render.com
+Puedes acceder a la versión desplegada del proyecto en la siguiente URL:
+[PROYECTO](https://mi-tienda-sergio.onrender.com/api/)
 
 
-#### Profesor:
-*Lic. Sergio Regalado Alessi*
+### ¿Te ha gustado este proyecto?
+Si encuentras útil este proyecto, ¡no dudes en darle una estrella! ⭐ Tu apoyo es muy apreciado y motiva a seguir trabajando en proyectos futuros.
